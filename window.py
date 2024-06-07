@@ -3,7 +3,7 @@
 # date:2024/5/17 10:18
 import tkinter as tk
 from tkinter import messagebox, filedialog
-from data_generator import data_generate
+from data_generator import data_generate, data_process
 from PIL import ImageTk, Image
 
 
@@ -20,7 +20,7 @@ class Application(tk.Frame):
         """
         # 用label表示的图片
         canvas = tk.Canvas(self, width=800, height=400)
-        img = Image.open("image/tobaccos.png")
+        img = Image.open("tobaccos.png")
         global photo
         photo = ImageTk.PhotoImage(img)
         canvas.create_image(400, 250, image=photo)
@@ -36,6 +36,7 @@ class Application(tk.Frame):
         tk.Button(self, text="生成数据", command=self._generate).place(x=365, y=45)
         # 按钮组件，用来执行选择文件指令
         tk.Button(self, text="选择文件", command=self._select_file).place(x=250, y=80)
+        tk.Button(self, text="处理数据", command=self._process_data).place(x=250, y=110)
         self.entry2 = tk.Entry(self, width=50)
         self.entry2.place(x=310, y=85)
 
@@ -47,11 +48,13 @@ class Application(tk.Frame):
     def _select_file(self):
         filetypes = (('text files', '*.txt'), ('comma separated file', '*.csv'),
                      ('All files', '*.*'))
-        filename = filedialog.askopenfilename(title='Open a file', initialdir='/',
+        self.filename = filedialog.askopenfilename(title='Open a file', initialdir='/',
                                               filetypes=filetypes)
-        # 可以在这里加入处理文件“filename”的代码
         self.entry2.delete(0, tk.END)
-        self.entry2.insert(0, filename)
+        self.entry2.insert(0, self.filename)
+
+    def _process_data(self):
+        data_process(self.filename)
 
 
 if __name__ == "__main__":
@@ -59,7 +62,7 @@ if __name__ == "__main__":
     window.title("这是一个生成植株数据的简单Gui程序")
     window.geometry("800x400+200+100")
     # 设置ico图标
-    window.iconbitmap("icon/tobacco.ico")
+    window.iconbitmap("tobacco.ico")
     app = Application(master=window)
 
     window.mainloop()

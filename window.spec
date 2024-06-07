@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['window.py', 'data_generator.py'],
+    ['window.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['tobacco.ico'],
 )

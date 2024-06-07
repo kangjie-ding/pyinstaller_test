@@ -21,3 +21,10 @@ def data_generate(plant_num):
             statistic_data[i][j+2] = area
             statistic_data[i][j+52] = angle
     np.savetxt("statistic_data.csv", statistic_data, delimiter=',')
+
+
+def data_process(address):
+    file_type = list(address.split("."))[-1]
+    if file_type == "txt":
+        data = np.loadtxt(address)
+    np.savetxt("data_shape.csv", data.shape, delimiter=',')
