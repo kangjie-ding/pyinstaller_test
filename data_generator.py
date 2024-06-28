@@ -2,6 +2,7 @@
 # author:Kangjie Ding
 # date:2024/5/17 10:19
 import numpy as np
+import os
 import random
 
 
@@ -23,8 +24,10 @@ def data_generate(plant_num):
     np.savetxt("statistic_data.csv", statistic_data, delimiter=',')
 
 
-def data_process(address):
-    file_type = list(address.split("."))[-1]
-    if file_type == "txt":
-        data = np.loadtxt(address)
-    np.savetxt("data_shape.csv", data.shape, delimiter=',')
+def data_process(file, save_folder):
+    with open(file, 'r') as file_in:
+        content = file_in.read()
+    write_path = os.path.join(os.getcwd(), save_folder, file.split('\\')[-1])
+    with open(write_path, 'w') as file_out:
+        file_out.write(content)
+
