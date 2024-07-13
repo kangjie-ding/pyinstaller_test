@@ -2,12 +2,13 @@
 # author:Kangjie Ding
 # date:2024/5/17 10:18
 import os
+import time
 import tkinter as tk
 from data_generator import data_generate, data_process
 from datetime import date
 from pathlib import Path
 from PIL import ImageTk, Image
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, ttk
 
 
 class Application(tk.Frame):
@@ -88,8 +89,25 @@ class Application(tk.Frame):
         processed_data_date = "processed_data-"+today
         if processed_data_date not in os.listdir(os.getcwd()):
             os.mkdir(processed_data_date)
-        for file in files:
+
+        # 设置弹窗
+        popup = tk.Toplevel(self.master)
+        popup.title("数据预处理中")
+        popup.geometry("250x100")
+        popup.attributes("-topmost", 1)
+        # 设置弹窗上的进度条
+        progress_var = tk.DoubleVar()
+        progress_bar = ttk.Progressbar(popup, length=200, variable=progress_var, mode="determinate")
+        progress_bar.place(x=10, y=30)
+
+        for i, file in enumerate(files):
             data_process(file, processed_data_date)
+            progress_var.set(int(200/len(files)*i))
+            popup.update()
+            time.sleep(0.5)
+        # 进度完成后关闭弹窗
+        popup.destroy()
+        time.sleep(0.5)
         messagebox.showinfo("提示", "成功完成数据预处理")
 
     def _process_data(self):
